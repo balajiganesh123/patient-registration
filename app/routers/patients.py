@@ -1,4 +1,4 @@
-from datetime import datetime, timezone
+from datetime import datetime, UTC
 from fastapi import APIRouter, HTTPException
 from app.schemas import PatientCreate, PatientResponse, PatientSummary
 
@@ -11,7 +11,7 @@ async def register_patient(data : PatientCreate) -> PatientResponse:
     if data.mrn in patient_store:
         raise HTTPException(status_code=409, detail=f"Patient with MRN {data.mrn} is already registered")
     
-    patient = PatientResponse(**data.model_dump(), created_at=datetime.now(timezone.utc))
+    patient = PatientResponse(**data.model_dump(), created_at=datetime.now(UTC))
     
     patient_store[data.mrn] = patient
     
