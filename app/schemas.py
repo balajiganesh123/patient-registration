@@ -1,5 +1,5 @@
 from datetime import date, datetime
-from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator, computed_field
 from typing import Literal
 
 class PatientCreate(BaseModel):
@@ -57,8 +57,13 @@ class PatientResponse(BaseModel):
 class PatientSummary(BaseModel):
     model_config = ConfigDict(from_attributes=True)
     mrn : str
-    first_name : str
-    last_name : str
+    first_name : str = Field(exclude=True)
+    last_name : str = Field(exclude=True)
     date_of_birth : date
     sex : str
     created_at : datetime
+    
+    @computed_field
+    @property
+    def name(self) -> str:
+        return f"{self.first_name} {self.last_name}"
