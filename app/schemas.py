@@ -57,13 +57,10 @@ class PatientResponse(BaseModel):
 class PatientSummary(BaseModel):
     model_config = ConfigDict(from_attributes=True)
     mrn : str
-    first_name : str = Field(exclude=True)
-    last_name : str = Field(exclude=True)
+    first_name : str = Field()
+    last_name : str = Field()
     date_of_birth : date
     sex : str
     created_at : datetime
     
-    @computed_field
-    @property
-    def name(self) -> str:
-        return f"{self.first_name} {self.last_name}"
+    
